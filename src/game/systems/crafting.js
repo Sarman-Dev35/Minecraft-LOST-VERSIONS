@@ -16,7 +16,7 @@ function matchesShaped(grid, size, recipe) {
   for (let y = 0; y < size; y++) rows.push(grid.slice(y * size, (y + 1) * size).map(x => x ? Object.entries(recipe.key).find(([, id]) => id === x)?.[0] ?? "?" : " ").join(""));
   const target = trimPattern(recipe.pattern);
   const actual = trimPattern(rows);
-  if (!target.length || target.length > size || target[0].length > size) return false;
+  if (!target.length || !actual.length || target.length > size || target[0].length > size) return false;
   const equals = (a, b) => a.length === b.length && a.every((row, i) => row === b[i]);
   const rotate = matrix => matrix[0].map((_, column) =>
     matrix.map(row => row[column]).reverse()
