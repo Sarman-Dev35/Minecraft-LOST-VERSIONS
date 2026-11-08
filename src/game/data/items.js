@@ -27,6 +27,8 @@ export const ITEMS = Object.freeze({
   diamond_ore: { name: "Diamond Ore", type: "block", stack: 64 },
   redstone_ore: { name: "Redstone Ore", type: "block", stack: 64 },
   lapis_ore: { name: "Lapis Lazuli Ore", type: "block", stack: 64 },
+  raw_iron: { name: "Raw Iron", type: "material", stack: 64 },
+  raw_gold: { name: "Raw Gold", type: "material", stack: 64 },
   iron_ingot: { name: "Iron Ingot", type: "material", stack: 64 },
   gold_ingot: { name: "Gold Ingot", type: "material", stack: 64 },
   diamond: { name: "Diamond", type: "material", stack: 64 },
