@@ -30,7 +30,7 @@
 
 The current playable interface is still an early prototype. The following are not yet fully connected or gameplay-tested: tool selection and durability, ore generation and mining tiers, working furnace/fuel/smelting UI, armor equipment, animal breeding, hostile mob AI and combat, larger streamed terrain and a complete world-management screen. Some item definitions and recipes exist as data foundations, but a registry entry alone does not mean that the feature is playable.
 
-Animals currently use simple original voxel models and basic wandering AI. Left-click them to attack; cows drop raw beef and leather, pigs drop raw pork, chickens drop raw chicken and feathers, and sheep drop wool. Loot appears in the world and can be collected by walking close to it. Right-click or Shift-click an inventory slot to select an item; press F to eat selected food, Q to drop one item, and walk over dropped items to pick them up. Food restores health directly (there is no hunger bar), and health slowly regenerates by one half-heart every 30 seconds. These are foundational systems; animal pathfinding, breeding and cooked-food processing are not implemented yet. The crafting grid is functional but intentionally simple; item clicks move one item into the grid, and inventory slots can be rearranged by drag-and-drop.
+Animals currently use simple original voxel models and basic wandering AI. Left-click them to attack; cows drop raw beef and leather, pigs drop raw pork, chickens drop raw chicken and feathers, and sheep drop wool. Loot appears in the world and can be collected by walking close to it. The nine-slot hotbar is backed by inventory slots 1–9. Left-click attacks animals or mines blocks; swords and axes deal more damage than bare hands and lose durability. Right-click places the selected block, uses a bed, or eats selected food. Q drops one selected item, and walking over drops collects them. Food restores health directly (there is no hunger bar), and health slowly regenerates by one half-heart every 30 seconds. These are foundational systems; animal pathfinding, breeding and cooked-food processing are not implemented yet. The crafting grid is functional but intentionally simple; item clicks move one item into the grid, and inventory slots can be rearranged by drag-and-drop.
 
 ## Open-source research and licensing
 
@@ -66,12 +66,12 @@ The production site is generated in `dist/`. GitHub Actions runs tests, builds t
 | Mouse | Look around |
 | Space | Jump |
 | Left Shift | Sprint |
-| Left mouse button | Mine a block / attack an animal |
-| Right mouse button | Place selected block / sleep at a bed at night |
+| Left mouse button | Attack an animal / mine a block |
+| Right mouse button | Eat selected food / place selected block / use bed |
 | E | Open / close inventory |
-| 1–6 | Select a hotbar block |
+| 1–9 | Select a hotbar item |
 | Right-click inventory slot / Shift-click | Select an inventory item |
-| F | Eat the selected food item |
+| Right-click with food selected | Eat the selected food item |
 | Q | Drop one selected inventory item |
 | Walk near a dropped item | Pick it up |
 | Inventory click | Move one item into the crafting grid |
