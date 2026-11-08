@@ -1,0 +1,64 @@
+// Classic-era shaped crafting recipes. A space is an empty crafting slot.
+// Recipes are original data definitions; they do not include modern Netherite/End content.
+const shaped = (id, pattern, key, result, count = 1, grid = 3) => ({
+  id, type: "shaped", pattern, key, result: { item: result, count }, grid
+});
+const shapeless = (id, ingredients, result, count = 1, grid = 2) => ({
+  id, type: "shapeless", ingredients, result: { item: result, count }, grid
+});
+
+export const RECIPES = Object.freeze([
+  shaped("planks", ["L"], { L: "oak_log" }, "oak_planks", 4, 2),
+  shaped("sticks", ["P", "P"], { P: "oak_planks" }, "sticks", 4, 2),
+  shaped("crafting_table", ["PP", "PP"], { P: "oak_planks" }, "crafting_table", 1, 2),
+  shaped("chest", ["PPP", "P P", "PPP"], { P: "oak_planks" }, "chest"),
+  shaped("furnace", ["CCC", "C C", "CCC"], { C: "cobblestone" }, "furnace"),
+  shaped("wooden_pickaxe", ["PPP", " S ", " S "], { P: "oak_planks", S: "sticks" }, "wooden_pickaxe"),
+  shaped("stone_pickaxe", ["CCC", " S ", " S "], { C: "cobblestone", S: "sticks" }, "stone_pickaxe"),
+  shaped("iron_pickaxe", ["III", " S ", " S "], { I: "iron_ingot", S: "sticks" }, "iron_pickaxe"),
+  shaped("gold_pickaxe", ["GGG", " S ", " S "], { G: "gold_ingot", S: "sticks" }, "gold_pickaxe"),
+  shaped("diamond_pickaxe", ["DDD", " S ", " S "], { D: "diamond", S: "sticks" }, "diamond_pickaxe"),
+  shaped("wooden_axe", ["PP", "PS", " S"], { P: "oak_planks", S: "sticks" }, "wooden_axe"),
+  shaped("stone_axe", ["CC", "CS", " S"], { C: "cobblestone", S: "sticks" }, "stone_axe"),
+  shaped("iron_axe", ["II", "IS", " S"], { I: "iron_ingot", S: "sticks" }, "iron_axe"),
+  shaped("gold_axe", ["GG", "GS", " S"], { G: "gold_ingot", S: "sticks" }, "gold_axe"),
+  shaped("diamond_axe", ["DD", "DS", " S"], { D: "diamond", S: "sticks" }, "diamond_axe"),
+  shaped("wooden_shovel", ["P", "S", "S"], { P: "oak_planks", S: "sticks" }, "wooden_shovel"),
+  shaped("stone_shovel", ["C", "S", "S"], { C: "cobblestone", S: "sticks" }, "stone_shovel"),
+  shaped("iron_shovel", ["I", "S", "S"], { I: "iron_ingot", S: "sticks" }, "iron_shovel"),
+  shaped("gold_shovel", ["G", "S", "S"], { G: "gold_ingot", S: "sticks" }, "gold_shovel"),
+  shaped("diamond_shovel", ["D", "S", "S"], { D: "diamond", S: "sticks" }, "diamond_shovel"),
+  shaped("wooden_sword", ["P", "P", "S"], { P: "oak_planks", S: "sticks" }, "wooden_sword"),
+  shaped("stone_sword", ["C", "C", "S"], { C: "cobblestone", S: "sticks" }, "stone_sword"),
+  shaped("iron_sword", ["I", "I", "S"], { I: "iron_ingot", S: "sticks" }, "iron_sword"),
+  shaped("gold_sword", ["G", "G", "S"], { G: "gold_ingot", S: "sticks" }, "gold_sword"),
+  shaped("diamond_sword", ["D", "D", "S"], { D: "diamond", S: "sticks" }, "diamond_sword"),
+  shaped("torch", ["C", "S"], { C: "coal", S: "sticks" }, "stick_torch", 4, 2),
+  shaped("ladder", ["S S", "SSS", "S S"], { S: "sticks" }, "ladder", 3),
+  shaped("wooden_door", ["PP", "PP", "PP"], { P: "oak_planks" }, "wooden_door", 3),
+  shaped("fence", ["PSP", "PSP"], { P: "oak_planks", S: "sticks" }, "fence", 2),
+  shaped("bow", [" PS", "P S", " PS"], { P: "sticks", S: "string" }, "bow"),
+  shaped("arrow", ["F", "S", "C"], { F: "feather", S: "stick", C: "flint" }, "arrow", 4),
+  shaped("bread", ["WWW"], { W: "wheat" }, "bread"),
+  shaped("bookshelf", ["PPP", "BBB", "PPP"], { P: "oak_planks", B: "book" }, "bookshelf"),
+  shaped("rail", ["I I", "ISI", "I I"], { I: "iron_ingot", S: "sticks" }, "rail", 16),
+  shaped("minecart", ["I I", "III"], { I: "iron_ingot" }, "minecart"),
+  shaped("bucket", ["I I", " I "], { I: "iron_ingot" }, "bucket"),
+  shaped("flint_and_steel", ["I", "F"], { I: "iron_ingot", F: "flint" }, "flint_and_steel"),
+  shaped("redstone_torch", ["R", "S"], { R: "redstone", S: "sticks" }, "redstone_torch"),
+  shaped("compass", [" I ", "IRI", " I "], { I: "iron_ingot", R: "redstone" }, "compass"),
+  shaped("clock", [" G ", "GRG", " G "], { G: "gold_ingot", R: "redstone" }, "clock"),
+  shaped("paper", ["SSS"], { S: "sugar_cane" }, "paper", 3),
+  shaped("book", ["P", "L", "P"], { P: "paper", L: "leather" }, "book"),
+  shaped("glowstone", ["DD", "DD"], { D: "glowstone_dust" }, "glowstone", 1, 2),
+  shaped("nether_brick", ["NN"], { N: "netherrack" }, "nether_brick", 1, 2),
+  shapeless("clay_blocks", ["clay_ball", "clay_ball", "clay_ball", "clay_ball"], "clay", 1, 2)
+]);
+
+export const SMELTING_RECIPES = Object.freeze([
+  { id: "smelt_iron", input: "iron_ore", output: { item: "iron_ingot", count: 1 }, experience: 0.7 },
+  { id: "smelt_gold", input: "gold_ore", output: { item: "gold_ingot", count: 1 }, experience: 1 },
+  { id: "smelt_glass", input: "sand", output: { item: "glass", count: 1 }, experience: 0.1 },
+  { id: "smelt_charcoal", input: "oak_log", output: { item: "charcoal", count: 1 }, experience: 0.15 },
+  { id: "cook_pork", input: "raw_porkchop", output: { item: "cooked_porkchop", count: 1 }, experience: 0.35 }
+]);
