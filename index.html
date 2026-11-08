@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minecraft: LOST VERSIONS — Alpha</title>
+<style>
+:root{--panel:rgba(18,20,22,.94);--line:#777;--text:#f2f2f2;--muted:#b9b9b9}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090b0e;color:var(--text);font-family:Arial,Helvetica,sans-serif}canvas{display:block;image-rendering:pixelated}
+#game{position:fixed;inset:0}#shade{position:fixed;inset:0;pointer-events:none;background:linear-gradient(#0003,transparent 22%,transparent 75%,#0005)}
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.48);backdrop-filter:blur(3px)}
+.panel{width:min(440px,92vw);padding:26px;background:var(--panel);border:2px solid #555;box-shadow:0 12px 50px #000b;text-align:center}
+h1{font-size:clamp(26px,5vw,42px);line-height:1.05;margin:0 0 6px;text-shadow:3px 3px #333;letter-spacing:1px}
+.subtitle{color:#bbb;font-size:12px;letter-spacing:3px;margin:0 0 25px}.version{font-size:11px;color:#888;margin-top:20px}
+button{display:block;width:100%;padding:12px 14px;margin:9px 0;border:2px solid #777;background:#555;color:white;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:inset 0 -3px #333;transition:background .12s}
+button:hover{background:#777;border-color:#ddd}button:active{transform:translateY(1px);box-shadow:inset 0 -1px #333}
+.small{font-size:12px;color:#aaa;line-height:1.5}.hidden{display:none!important}
+.setting{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;margin:15px 0;font-size:14px}.setting input{width:48%}.setting select{width:48%;padding:7px;background:#292929;color:white;border:1px solid #777}
+#hud{position:fixed;inset:0;pointer-events:none}.crosshair{position:absolute;left:50%;top:50%;width:14px;height:14px;transform:translate(-50%,-50%)}.crosshair:before,.crosshair:after{content:"";position:absolute;background:#fff;box-shadow:0 0 2px #000}.crosshair:before{width:2px;height:14px;left:6px}.crosshair:after{height:2px;width:14px;top:6px}
+#hotbar{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;padding:4px;background:#1119;border:2px solid #aaa;gap:3px}.slot{width:43px;height:43px;border:2px solid #777;background:#3339;display:grid;place-items:center;font-size:10px;color:#ddd;position:relative}.slot.active{border:3px solid white;background:#7779}.swatch{width:20px;height:20px;border:1px solid #0008}.slot span{position:absolute;top:1px;left:3px;font-size:9px}
+#hint{position:absolute;top:15px;left:15px;color:white;text-shadow:1px 1px #000;font-size:12px;line-height:1.6}#toast{position:absolute;top:15%;left:50%;transform:translateX(-50%);background:#111c;padding:9px 16px;opacity:0;transition:opacity .25s}
+#pauseHint{position:absolute;bottom:78px;width:100%;text-align:center;font-size:11px;color:#ddd;text-shadow:1px 1px #000}
+</style>
+</head>
+<body>
+<div id="game"></div><div id="shade"></div>
+<div id="hud" class="hidden"><div class="crosshair"></div><div id="hint">Alpha 0.1.0<br>WASD Move · Space Jump · Shift Sprint<br>Left click Break · Right click Place · 1–5 Select</div><div id="hotbar"></div><div id="toast"></div><div id="pauseHint">ESC — Pause</div></div>
+<div id="main" class="overlay"><div class="panel"><h1>MINECRAFT:<br>LOST VERSIONS</h1><div class="subtitle">A VOXEL SANDBOX EXPERIMENT</div><button id="play">SINGLEPLAYER</button><button id="settingsBtn">SETTINGS</button><button id="aboutBtn">ABOUT</button><div class="version">ALPHA 0.1.0 · EXPERIMENTAL BUILD</div></div></div>
+<div id="settings" class="overlay hidden"><div class="panel"><h1>SETTINGS</h1><div class="setting"><label for="volume">Music volume</label><input id="volume" type="range" min="0" max="100" value="28"></div><div class="setting"><label for="sensitivity">Mouse sensitivity</label><input id="sensitivity" type="range" min="1" max="100" value="35"></div><div class="setting"><label for="fov">Field of view</label><input id="fov" type="range" min="60" max="110" value="75"></div><div class="setting"><label for="quality">Render distance</label><select id="quality"><option value="16">Short</option><option value="24" selected>Normal</option><option value="32">Far</option></select></div><button id="backSettings">DONE</button></div></div>
+<div id="about" class="overlay hidden"><div class="panel"><h1>ABOUT</h1><p class="small">Minecraft: LOST VERSIONS is an independent, original voxel sandbox prototype by Sarman Studios. This is an early playable foundation: explore, break blocks and build. It is not affiliated with or endorsed by Mojang or Microsoft.</p><button id="backAbout">BACK</button></div></div>
+<div id="pause" class="overlay hidden"><div class="panel"><h1>GAME PAUSED</h1><button id="resume">BACK TO GAME</button><button id="pauseSettings">SETTINGS</button><button id="saveQuit">SAVE & TITLE</button></div></div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const $=id=>document.getElementById(id);
+const overlays=['main','settings','about','pause'];function show(id){overlays.forEach(x=>$(x).classList.toggle('hidden',x!==id));}
+let scene,camera,renderer,clock,world=new Map(),instanced=[],selected=0,playing=false,paused=false,audioCtx=null,musicGain=null,musicNodes=[],keys={},velocity=new THREE.Vector3(),grounded=false, yaw=0,pitch=0,toastTimer;
+const blockDefs=[['Grass',0x668b45],['Dirt',0x79543a],['Stone',0x858585],['Wood',0x765033],['Leaves',0x426b37]];
+const mat=blockDefs.map(x=>new THREE.MeshLambertMaterial({color:x[1]}));const cube=new THREE.BoxGeometry(1,1,1);
+const key=(x,y,z)=>x+','+y+','+z;
+function put(x,y,z,t){world.set(key(x,y,z),{x,y,z,t})}function remove(x,y,z){world.delete(key(x,y,z))}
+function hash(x,z){let n=Math.sin(x*127.1+z*311.7)*43758.5453;return n-Math.floor(n)}
+function heightAt(x,z){return Math.floor(3+Math.sin(x*.22)*1.3+Math.cos(z*.19)*1.2+Math.sin((x+z)*.11)*1.1)}
+function generateWorld(){
+ world.clear();const r=Number($('quality').value);
+ for(let x=-r;x<=r;x++)for(let z=-r;z<=r;z++){let h=heightAt(x,z);for(let y=-3;y<=h;y++)put(x,y,z,y===h?0:y>h-3?1:2);
+ if(hash(x,z)>.986&&Math.abs(x)+Math.abs(z)>7){let th=3+Math.floor(hash(z,x)*3);for(let y=1;y<=th;y++)put(x,h+y,z,3);for(let ax=-2;ax<=2;ax++)for(let az=-2;az<=2;az++)for(let ay=th-1;ay<=th+2;ay++)if(Math.abs(ax)+Math.abs(az)+(ay===th+2?2:0)<5&&!world.has(key(x+ax,h+ay,z+az)))put(x+ax,h+ay,z+az,4);}
+ }
+ rebuild();
+}
+function rebuild(){for(const m of instanced)scene.remove(m);instanced=[];for(let t=0;t<5;t++){let blocks=[...world.values()].filter(b=>b.t===t);if(!blocks.length)continue;let mesh=new THREE.InstancedMesh(cube,mat[t],blocks.length),obj=new THREE.Object3D();blocks.forEach((b,i)=>{obj.position.set(b.x,b.y,b.z);obj.updateMatrix();mesh.setMatrixAt(i,obj.matrix)});mesh.instanceMatrix.needsUpdate=true;mesh.userData.blocks=blocks;mesh.userData.type=t;scene.add(mesh);instanced.push(mesh)}}
+function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x91a9b8);scene.fog=new THREE.Fog(0x91a9b8,18,Number($('quality').value)*1.55);camera=new THREE.PerspectiveCamera(Number($('fov').value),innerWidth/innerHeight,.1,180);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({antialias:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=false;$('game').appendChild(renderer.domElement);scene.add(new THREE.HemisphereLight(0xdceaff,0x596047,2));let sun=new THREE.DirectionalLight(0xffedcf,1.3);sun.position.set(-20,35,15);scene.add(sun);clock=new THREE.Clock();generateWorld();camera.position.set(0,heightAt(0,0)+3,7);animate();window.addEventListener('resize',resize)}
+function resize(){if(!camera)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}
+function toast(s){$('toast').textContent=s;$('toast').style.opacity=1;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.opacity=0,1700)}
+function startMusic(){if(audioCtx)return;try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();musicGain=audioCtx.createGain();musicGain.gain.value=Number($('volume').value)/100*.12;musicGain.connect(audioCtx.destination);[55,82.41,110].forEach((f,i)=>{let o=audioCtx.createOscillator(),g=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();o.type=i===1?'triangle':'sine';o.frequency.value=f;g.gain.value=[.22,.08,.045][i];filter.type='lowpass';filter.frequency.value=240; o.connect(filter);filter.connect(g);g.connect(musicGain);o.start();musicNodes.push(o,g,filter)});}catch(e){}}
+function updateMusic(){if(musicGain)musicGain.gain.setTargetAtTime(Number($('volume').value)/100*.12,audioCtx.currentTime,.15)}
+function lock(){renderer.domElement.requestPointerLock?.()}
+function enterGame(){if(!scene)init();startMusic();generateWorld();camera.position.set(0,heightAt(0,0)+3,7);yaw=0;pitch=0;velocity.set(0,0,0);playing=true;paused=false;$('hud').classList.remove('hidden');show('');lock()}
+function pauseGame(){if(!playing)return;paused=true;document.exitPointerLock?.();show('pause')}
+function resumeGame(){paused=false;show('');lock()}
+document.addEventListener('pointerlockchange',()=>{if(playing&&!paused&&document.pointerLockElement!==renderer.domElement)pauseGame()});
+document.addEventListener('mousemove',e=>{if(document.pointerLockElement!==renderer.domElement||paused)return;let s=Number($('sensitivity').value)*.0018;yaw-=e.movementX*s;pitch-=e.movementY*s;pitch=Math.max(-1.52,Math.min(1.52,pitch));camera.rotation.set(pitch,yaw,0)});
+document.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='Escape'&&playing&&!paused)pauseGame();if(e.code.startsWith('Digit')){let n=Number(e.code.slice(5))-1;if(n>=0&&n<5){selected=n;drawHotbar()}}});
+document.addEventListener('keyup',e=>keys[e.code]=false);
+function drawHotbar(){$('hotbar').innerHTML=blockDefs.map((b,i)=>'<div class="slot '+(selected===i?'active':'')+'"><span>'+(i+1)+'</span><div class="swatch" style="background:#'+b[1].toString(16).padStart(6,'0')+'"></div></div>').join('')}
+function rayBlock(){let ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(0,0),camera);let hits=ray.intersectObjects(instanced);if(!hits.length||hits[0].distance>6)return null;let hit=hits[0],mesh=hit.object,idx=hit.instanceId,b=mesh.userData.blocks[idx];return b?{b,normal:hit.face.normal.clone(),distance:hit.distance}:null}
+function interact(place){let hit=rayBlock();if(!hit)return;let b=hit.b;if(place){let n=hit.normal;let x=b.x+Math.round(n.x),y=b.y+Math.round(n.y),z=b.z+Math.round(n.z);if(y< -4||world.has(key(x,y,z)))return;if(Math.abs(x-camera.position.x)<.8&&Math.abs(z-camera.position.z)<.8&&y>camera.position.y-2&&y<camera.position.y+.2)return;put(x,y,z,selected)}else{if(b.y<=-3)return;remove(b.x,b.y,b.z)}rebuild()}
+document.addEventListener('mousedown',e=>{if(document.pointerLockElement!==renderer.domElement||paused)return;if(e.button===0)interact(false);if(e.button===2)interact(true)});document.addEventListener('contextmenu',e=>e.preventDefault());
+function solidAt(x,y,z){return world.has(key(Math.floor(x),Math.floor(y),Math.floor(z)))}
+function move(dt){let forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw)),right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw)),dir=new THREE.Vector3();if(keys.KeyW)dir.add(forward);if(keys.KeyS)dir.sub(forward);if(keys.KeyD)dir.add(right);if(keys.KeyA)dir.sub(right);if(dir.lengthSq())dir.normalize();let speed=keys.ShiftLeft?7:4.4;let nx=camera.position.x+dir.x*speed*dt,nz=camera.position.z+dir.z*speed*dt;
+ if(!solidAt(nx,camera.position.y-1.45,camera.position.z)&&!solidAt(nx,camera.position.y-.3,camera.position.z))camera.position.x=nx;
+ if(!solidAt(camera.position.x,camera.position.y-1.45,nz)&&!solidAt(camera.position.x,camera.position.y-.3,nz))camera.position.z=nz;
+ if(keys.Space&&grounded){velocity.y=7;grounded=false}velocity.y-=19*dt;let ny=camera.position.y+velocity.y*dt;
+ if(velocity.y<=0&&(solidAt(camera.position.x,ny-1.65,camera.position.z)||solidAt(camera.position.x-.25,ny-1.65,camera.position.z)||solidAt(camera.position.x+.25,ny-1.65,camera.position.z))){ny=Math.floor(ny-1.65)+1+1.65;velocity.y=0;grounded=true}else grounded=false;
+ if(ny< -8){camera.position.set(0,heightAt(0,0)+4,7);velocity.set(0,0,0);toast('Respawned')}
+ camera.position.y=ny;
+}
+function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.04);if(playing&&!paused&&document.pointerLockElement===renderer.domElement){move(dt);$('hint').innerHTML='Alpha 0.1.0<br>WASD Move · Space Jump · Shift Sprint<br>Left click Break · Right click Place · 1–5 Select';}renderer.render(scene,camera)}
+$('play').onclick=enterGame;$('settingsBtn').onclick=()=>show('settings');$('aboutBtn').onclick=()=>show('about');$('backSettings').onclick=()=>show(playing?'pause':'main');$('backAbout').onclick=()=>show('main');$('resume').onclick=resumeGame;$('pauseSettings').onclick=()=>show('settings');$('saveQuit').onclick=()=>{playing=false;paused=false;$('hud').classList.add('hidden');document.exitPointerLock?.();show('main')};$('volume').oninput=updateMusic;$('fov').oninput=()=>{if(camera){camera.fov=Number($('fov').value);camera.updateProjectionMatrix()}};$('quality').onchange=()=>{if(scene){scene.fog.far=Number($('quality').value)*1.55;if(playing)generateWorld()}};drawHotbar();init();
+</script></body></html>
