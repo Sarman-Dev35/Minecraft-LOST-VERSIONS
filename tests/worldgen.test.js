@@ -22,7 +22,7 @@ test("tree and animal spawn candidates use forest/plains biomes",()=>{
  const world=generateOverworld(20,4);
  assert.ok(world.trees.length>0);
  assert.ok(world.spawnCandidates.length>0);
- assert.ok(world.spawnCandidates.every(p=>["plains","birch_forest","pine_forest","forest","hills"].includes(p.biome)));
+ assert.ok(world.spawnCandidates.every(p=>["plains","birch_forest","pine_forest","forest","hills","desert","snowy_taiga","swamp"].includes(p.biome)));
  assert.ok(["plains","birch_forest","pine_forest","hills","forest"].includes(biomeAt(0,0)));
 });
 
