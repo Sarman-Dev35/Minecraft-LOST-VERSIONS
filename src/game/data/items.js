@@ -73,6 +73,8 @@ export const ITEMS = Object.freeze({
   sign: { name: "Sign", type: "block", stack: 16 },
   bowl: { name: "Bowl", type: "material", stack: 64 },
   mushroom_stew: { name: "Mushroom Stew", type: "food", stack: 1, food: 6 },
+  red_mushroom: { name: "Red Mushroom", type: "material", stack: 64 },
+  brown_mushroom: { name: "Brown Mushroom", type: "material", stack: 64 },
   wooden_pickaxe: { name: "Wooden Pickaxe", type: "tool", stack: 1, durability: 59, tier: 1 },
   stone_pickaxe: { name: "Stone Pickaxe", type: "tool", stack: 1, durability: 131, tier: 2 },
   iron_pickaxe: { name: "Iron Pickaxe", type: "tool", stack: 1, durability: 250, tier: 3 },
