@@ -40,3 +40,26 @@ export function generateTerrain({originX=0,originZ=0,width=16,depth=16,seed=1,mi
  }
  return blocks;
 }
+
+/**
+ * Generate one deterministic 16x16 gameplay chunk. A two-block tree halo lets
+ * canopies cross chunk edges without seams; only blocks belonging to this
+ * chunk are returned.
+ */
+export function generateChunkData(cx,cz,seed=1){
+ if(!Number.isInteger(cx)||!Number.isInteger(cz)||!Number.isInteger(seed))throw new RangeError("Invalid chunk coordinates or seed");
+ const originX=cx*16,originZ=cz*16;
+ const raw=generateTerrain({originX,originZ,width:16,depth:16,seed,minY:-24});
+ const ids={grass_block:BLOCK.GRASS,dirt:BLOCK.DIRT,stone:BLOCK.STONE,coal_ore:BLOCK.COAL_ORE,iron_ore:BLOCK.IRON_ORE,gold_ore:BLOCK.GOLD_ORE,diamond_ore:BLOCK.DIAMOND_ORE,redstone_ore:BLOCK.REDSTONE_ORE,lapis_ore:BLOCK.LAPIS_ORE};
+ const blocks=raw.map(b=>({x:b.x,y:b.y,z:b.z,t:ids[b.id]??BLOCK.STONE}));
+ const spawnCandidates=[];
+ for(let x=originX;x<originX+16;x++)for(let z=originZ;z<originZ+16;z++){
+  const biome=biomeAt(x,z,seed),surface=terrainHeight(x,z,seed),density=biome==="plains"?.004:biome==="hills"?.012:.035;
+  if(hash2(x,z,seed+5)<density){
+   const tree=[];addTree(tree,x,surface,z,biome,seed);
+   for(const b of tree)if(b.x>=originX&&b.x<originX+16&&b.z>=originZ&&b.z<originZ+16)blocks.push(b);
+  }else if(hash2(x,z,seed+11)>.7)spawnCandidates.push({x,y:surface+1,z,biome});
+ }
+ const minX=originX,minZ=originZ;
+ return {blocks: [...new Map(blocks.map(b=>[`${b.x},${b.y},${b.z}`,b])).values()],spawnCandidates, cx,cz,seed,minX,minZ};
+}
