@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 310" role="img" aria-labelledby="title desc">
+<title id="title">MINECRAFT The Lost Version — Sarman Studios</title><desc id="desc">Original pixel-art stone and grass title mark for the Lost Versions voxel game.</desc>
+<defs><linearGradient id="stone" x2="0" y2="1"><stop stop-color="#b9b9b9"/><stop offset=".48" stop-color="#777"/><stop offset="1" stop-color="#454545"/></linearGradient><linearGradient id="green" x2="0" y2="1"><stop stop-color="#83b94d"/><stop offset="1" stop-color="#426d2f"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dy="9"/><feComponentTransfer><feFuncA type="linear" slope=".7"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<g filter="url(#shadow)" stroke="#171717" stroke-width="12" stroke-linejoin="round">
+<path fill="url(#stone)" d="M72 35H828L858 65V193H42V65Z"/><path fill="#303030" d="M42 165H858V205L828 230H72L42 205Z"/>
+<path fill="url(#green)" d="M42 65L72 35H828L858 65V89H42Z"/>
+<path fill="#5d5d5d" d="M42 89H858V165H42Z"/>
+</g>
+<g fill="#fff" stroke="#292929" stroke-width="5" paint-order="stroke" font-family="Arial Black,Impact,sans-serif" font-weight="900" text-anchor="middle">
+<text x="450" y="151" font-size="91" letter-spacing="-3">MINECRAFT</text>
+</g>
+<path d="M115 183H785" stroke="#a6a6a6" stroke-width="4" opacity=".55"/>
+<text x="450" y="225" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-weight="900" font-size="42" letter-spacing="5" fill="#e6e6e6" stroke="#222" stroke-width="5" paint-order="stroke">THE LOST VERSION</text>
+<text x="450" y="278" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="23" letter-spacing="9" fill="#a9c58b">SARMAN STUDIOS</text>
+</svg>
