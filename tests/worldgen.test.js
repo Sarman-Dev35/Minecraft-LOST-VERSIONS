@@ -25,3 +25,17 @@ test("tree and animal spawn candidates use forest/plains biomes",()=>{
  assert.ok(world.spawnCandidates.every(p=>["plains","birch_forest","pine_forest","forest","hills"].includes(p.biome)));
  assert.ok(["plains","birch_forest","pine_forest","hills","forest"].includes(biomeAt(0,0)));
 });
+
+
+test("large bounded worlds expose a visible unbreakable border",()=>{
+ const world=generateOverworld(48,12);
+ assert.equal(world.radius,48);
+ assert.ok(world.blocks.some(b=>b.t===BLOCK.BORDER&&Math.abs(b.x)===48));
+ assert.ok(world.blocks.some(b=>b.t===BLOCK.BORDER&&Math.abs(b.z)===48));
+ assert.ok(world.blocks.some(b=>b.t===BLOCK.BORDER&&b.y===world.borderTop));
+});
+
+test("world radius supports the large-map preset but remains bounded",()=>{
+ assert.doesNotThrow(()=>generateOverworld(64,2));
+ assert.throws(()=>generateOverworld(65,2),RangeError);
+});
