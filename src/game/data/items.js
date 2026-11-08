@@ -19,6 +19,7 @@ export const ITEMS = Object.freeze({
   oak_log: { name: "Oak Log", type: "block", stack: 64 },
   oak_planks: { name: "Oak Planks", type: "block", stack: 64 },
   sticks: { name: "Stick", type: "material", stack: 64 },
+  coal_ore: { name: "Coal Ore", type: "block", stack: 64 },
   coal: { name: "Coal", type: "material", stack: 64 },
   charcoal: { name: "Charcoal", type: "material", stack: 64 },
   iron_ore: { name: "Iron Ore", type: "block", stack: 64 },
