@@ -21,14 +21,40 @@ jobs:
         run: npm test
       - name: Build web game
         run: npm run build
-      - name: Package build
+      - name: Package web build
         run: |
           cd dist
-          zip -r ../Minecraft-LOST-VERSIONS-Alpha-0.6-dev.zip .
-      - name: Upload build artifact
+          zip -r ../Minecraft-LOST-VERSIONS-Alpha-0.6-web.zip .
+      - name: Upload web build
         uses: actions/upload-artifact@v4
         with:
-          name: Minecraft-LOST-VERSIONS-Alpha-0.6-dev
-          path: Minecraft-LOST-VERSIONS-Alpha-0.6-dev.zip
+          name: Minecraft-LOST-VERSIONS-Alpha-0.6-web
+          path: Minecraft-LOST-VERSIONS-Alpha-0.6-web.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  windows-exe:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install game dependencies
+        run: npm install
+      - name: Test game systems
+        run: npm test
+      - name: Install Windows packaging tools
+        run: npm install --no-save electron@39.2.7 electron-builder@26.0.12
+      - name: Build desktop application
+        run: npm run build:desktop
+      - name: Upload Windows executables
+        uses: actions/upload-artifact@v4
+        with:
+          name: Minecraft-LOST-VERSIONS-Alpha-0.6-Windows-x64
+          path: release/*.exe
           if-no-files-found: error
           retention-days: 14
