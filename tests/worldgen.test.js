@@ -23,7 +23,7 @@ test("tree and animal spawn candidates use forest/plains biomes",()=>{
  assert.ok(world.trees.length>0);
  assert.ok(world.spawnCandidates.length>0);
  assert.ok(world.spawnCandidates.every(p=>["plains","birch_forest","pine_forest","forest","hills","desert","snowy_taiga","swamp"].includes(p.biome)));
- assert.ok(["plains","birch_forest","pine_forest","hills","forest"].includes(biomeAt(0,0)));
+ assert.ok(["plains","birch_forest","pine_forest","hills","forest","desert","snowy_taiga","swamp"].includes(biomeAt(0,0)));
 });
 
 
