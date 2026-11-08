@@ -85,6 +85,14 @@ export class ChunkStore {
   updateEntity(entity) {
     if (!entity || entity.id === undefined || !Number.isFinite(entity.x) || !Number.isFinite(entity.z)) return false;
     const key = this.keyForBlock(Math.floor(entity.x), Math.floor(entity.z));
+    // A moving entity belongs to exactly one chunk; remove stale snapshots
+    // from its previous chunk before writing the new position.
+    for (const [otherKey, list] of this.entityStore) {
+      if (otherKey !== key) this.entityStore.set(otherKey, list.filter(e => e.id !== entity.id));
+    }
+    for (const [otherKey, chunk] of this.active) {
+      if (otherKey !== key) chunk.entities = chunk.entities.filter(e => e.id !== entity.id);
+    }
     const entities = this.entityStore.get(key) || [];
     const i = entities.findIndex(e => e.id === entity.id);
     if (i >= 0) entities[i] = structuredClone(entity); else entities.push(structuredClone(entity));
@@ -137,5 +145,75 @@ export class ChunkStore {
     this.worldLimit = Number.isFinite(data.worldLimit) ? data.worldLimit : this.worldLimit;
     this.blockChanges = new Map(data.blockChanges || []);
     this.entityStore = new Map(data.entities || []);
+  }
+}
+
+
+/**
+ * Incremental chunk-window scheduler. It never generates the whole requested
+ * render distance in one frame; callers invoke tick() with a small budget.
+ */
+export class ChunkScheduler {
+  constructor({ store, onLoad = () => {}, onUnload = () => {}, maxLoadsPerTick = 1 } = {}) {
+    if (!store || typeof store.load !== "function") throw new TypeError("A ChunkStore is required");
+    if (!Number.isInteger(maxLoadsPerTick) || maxLoadsPerTick < 1) throw new RangeError("maxLoadsPerTick must be positive");
+    this.store = store;
+    this.onLoad = onLoad;
+    this.onUnload = onUnload;
+    this.maxLoadsPerTick = maxLoadsPerTick;
+    this.radius = 2;
+    this.center = { x: 0, z: 0 };
+    this.wanted = new Set();
+    this.queue = [];
+  }
+
+  update(centerX, centerZ, radius = this.radius) {
+    if (!Number.isFinite(centerX) || !Number.isFinite(centerZ)) throw new TypeError("Chunk center must be finite");
+    if (!Number.isInteger(radius) || radius < 2 || radius > 32) throw new RangeError("Render distance must be between 2 and 32 chunks");
+    const cx = chunkCoord(centerX), cz = chunkCoord(centerZ);
+    this.radius = radius;
+    this.center = { x: cx, z: cz };
+    const wanted = new Set();
+    const candidates = [];
+    for (let x = cx - radius; x <= cx + radius; x++) {
+      for (let z = cz - radius; z <= cz + radius; z++) {
+        if (!inWorld(x * CHUNK_SIZE, z * CHUNK_SIZE, this.store.worldLimit)) continue;
+        const key = chunkKey(x, z);
+        wanted.add(key);
+        if (!this.store.active.has(key)) candidates.push({ x, z, key, distance: (x-cx)**2 + (z-cz)**2 });
+      }
+    }
+    for (const chunk of [...this.store.active.values()]) {
+      if (!wanted.has(chunk.key)) {
+        this.onUnload(chunk);
+        this.store.unload(chunk.cx, chunk.cz);
+      }
+    }
+    candidates.sort((a,b) => a.distance-b.distance || a.x-b.x || a.z-b.z);
+    this.wanted = wanted;
+    this.queue = candidates;
+    return { wanted: wanted.size, queued: this.queue.length, active: this.store.active.size };
+  }
+
+  tick(budget = this.maxLoadsPerTick) {
+    if (!Number.isInteger(budget) || budget < 0) throw new RangeError("Chunk load budget must be a non-negative integer");
+    let loaded = 0;
+    while (loaded < budget && this.queue.length) {
+      const next = this.queue.shift();
+      if (!this.wanted.has(next.key) || this.store.active.has(next.key)) continue;
+      const chunk = this.store.load(next.x, next.z);
+      this.onLoad(chunk);
+      loaded++;
+    }
+    return { loaded, remaining: this.queue.length, active: this.store.active.size };
+  }
+
+  clear() {
+    for (const chunk of [...this.store.active.values()]) {
+      this.onUnload(chunk);
+      this.store.unload(chunk.cx, chunk.cz);
+    }
+    this.queue = [];
+    this.wanted.clear();
   }
 }
