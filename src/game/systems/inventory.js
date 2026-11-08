@@ -7,7 +7,7 @@ export class Inventory {
     this.slots = Array.from({ length: size }, (_, i) => {
       const slot = slots?.[i];
       return slot?.item && getItem(slot.item) && Number.isInteger(slot.count) && slot.count > 0
-        ? { item: slot.item, count: Math.min(slot.count, getItem(slot.item).stack) }
+        ? { item: slot.item, count: Math.min(slot.count, getItem(slot.item).stack), ...(Number.isInteger(slot.durability) ? { durability: Math.max(0, Math.min(getItem(slot.item).durability ?? slot.durability, slot.durability)) } : {}) }
         : null;
     });
   }
@@ -45,7 +45,7 @@ export class Inventory {
     for (let i = 0; i < this.slots.length; i++) {
       if (!this.slots[i]) {
         const moved = Math.min(def.stack, remaining);
-        this.slots[i] = { item, count: moved }; remaining -= moved;
+        this.slots[i] = { item, count: moved, ...(def.durability && moved === 1 ? { durability: def.durability } : {}) }; remaining -= moved;
         if (!remaining) return 0;
       }
     }
