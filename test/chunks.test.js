@@ -34,7 +34,7 @@ test('entities persist after leaving and returning to a chunk', () => {
 
 test('world changes serialize independently from active chunks', () => {
   const store=new ChunkStore({seed:99,generateChunk:generator});
-  store.setBlock(31,2,31,null);
+  store.setBlock(16,2,16,null);
   const data=store.serialize();
   const restored=new ChunkStore({generateChunk:generator});
   restored.hydrate(data);
