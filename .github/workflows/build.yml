@@ -23,11 +23,11 @@ jobs:
       - name: Package build
         run: |
           cd dist
-          zip -r ../Minecraft-LOST-VERSIONS-Alpha-0.2.0.zip .
+          zip -r ../Minecraft-LOST-VERSIONS-Alpha-0.3-dev.zip .
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Minecraft-LOST-VERSIONS-Alpha-0.2.0
-          path: Minecraft-LOST-VERSIONS-Alpha-0.2.0.zip
+          name: Minecraft-LOST-VERSIONS-Alpha-0.3-dev
+          path: Minecraft-LOST-VERSIONS-Alpha-0.3-dev.zip
           if-no-files-found: error
           retention-days: 14
