@@ -77,3 +77,16 @@ test("all registered crafting and smelting recipes reference known items", () =>
     assert.ok(ITEMS[recipe.output.item], `unknown smelting output in ${recipe.id}`);
   }
 });
+
+test("rotated shaped recipes are accepted", () => {
+  const recipe = {
+    id: "test_rotation",
+    type: "shaped",
+    pattern: ["AB", " C"],
+    key: { A: "oak_planks", B: "sticks", C: "coal" },
+    result: { item: "torch", count: 1 },
+    grid: 2
+  };
+  const rotated = [null, "oak_planks", "coal", "sticks"];
+  assert.equal(findCraftingRecipe(rotated, 2, [recipe])?.id, "test_rotation");
+});
