@@ -18,7 +18,16 @@ function matchesShaped(grid, size, recipe) {
   const actual = trimPattern(rows);
   if (!target.length || target.length > size || target[0].length > size) return false;
   const equals = (a, b) => a.length === b.length && a.every((row, i) => row === b[i]);
-  const variants = [actual, actual.map(row => [...row].reverse().join(""))];
+  const rotate = matrix => matrix[0].map((_, column) =>
+    matrix.map(row => row[column]).reverse()
+  );
+  const variants = [];
+  let current = actual.map(row => [...row]);
+  for (let turn = 0; turn < 4; turn++) {
+    variants.push(current.map(row => row.join("")));
+    variants.push(current.map(row => [...row].reverse().join("")));
+    current = rotate(current);
+  }
   return variants.some(v => equals(v, target));
 }
 
