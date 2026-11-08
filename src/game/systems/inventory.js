@@ -6,8 +6,8 @@ export class Inventory {
     this.size = size;
     this.slots = Array.from({ length: size }, (_, i) => {
       const slot = slots?.[i];
-      return slot?.item && Number.isInteger(slot.count) && slot.count > 0
-        ? { item: slot.item, count: Math.min(slot.count, getItem(slot.item)?.stack ?? 64) }
+      return slot?.item && getItem(slot.item) && Number.isInteger(slot.count) && slot.count > 0
+        ? { item: slot.item, count: Math.min(slot.count, getItem(slot.item).stack) }
         : null;
     });
   }
@@ -18,7 +18,7 @@ export class Inventory {
 
   canAdd(item, count = 1) {
     const def = getItem(item);
-    if (!def || count < 0) return false;
+    if (!def || !Number.isInteger(count) || count < 0) return false;
     if (count === 0) return true;
     let remaining = count;
     for (const slot of this.slots) {
