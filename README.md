@@ -1,7 +1,7 @@
 # MINECRAFT: The Lost Version
 ### An independent voxel survival sandbox by Sarman Studios
 
-**Alpha 0.4 development build** — a classic-inspired survival prototype under active development.
+**Alpha 0.5 development build** — a classic-inspired survival prototype under active development.
 
 > This is an independent, fan-inspired project. It is not affiliated with, endorsed by, or sponsored by Mojang or Microsoft. Minecraft is a trademark of its respective owner. Sarman Studios retains rights to its original code, logo, artwork, and original project materials.
 
@@ -9,7 +9,7 @@
 
 - First-person movement, mouse look, jumping, sprinting, mining and block placement.
 - Procedural starter terrain with trees and wandering voxel sheep, cows, pigs and chickens.
-- Six-slot block hotbar, health display, fall damage, respawn and slow passive health regeneration.
+- Nine-slot inventory hotbar, health display, fall damage, respawn and slow passive health regeneration.
 - Day/night cycle with changing sky and lighting.
 - Bed crafting (3 wool + 3 planks), placement, night-time sleeping and morning healing.
 - 36-slot stack-aware inventory with drag-and-drop rearrangement.
@@ -28,7 +28,7 @@
 
 ## Still under development — not yet a complete survival release
 
-The current playable interface is still an early prototype. The following are not yet fully connected or gameplay-tested: tool selection and durability, ore generation and mining tiers, working furnace/fuel/smelting UI, armor equipment, animal breeding, hostile mob AI and combat, larger streamed terrain and a complete world-management screen. Some item definitions and recipes exist as data foundations, but a registry entry alone does not mean that the feature is playable.
+The current playable interface is still an early prototype. The following are not yet fully connected or gameplay-tested: ore generation and mining tiers, working furnace/fuel/smelting UI, armor equipment, animal breeding, hostile mob AI and combat, larger streamed terrain and a complete world-management screen. Some item definitions and recipes exist as data foundations, but a registry entry alone does not mean that the feature is playable.
 
 Animals currently use simple original voxel models and basic wandering AI. Left-click them to attack; cows drop raw beef and leather, pigs drop raw pork, chickens drop raw chicken and feathers, and sheep drop wool. Loot appears in the world and can be collected by walking close to it. The nine-slot hotbar is backed by inventory slots 1–9. Left-click attacks animals or mines blocks; swords and axes deal more damage than bare hands and lose durability. Right-click places the selected block, uses a bed, or eats selected food. Q drops one selected item, and walking over drops collects them. Food restores health directly (there is no hunger bar), and health slowly regenerates by one half-heart every 30 seconds. These are foundational systems; animal pathfinding, breeding and cooked-food processing are not implemented yet. The crafting grid is functional but intentionally simple; item clicks move one item into the grid, and inventory slots can be rearranged by drag-and-drop.
 
@@ -56,7 +56,7 @@ npm run build
 npm run preview
 ```
 
-The production site is generated in `dist/`. GitHub Actions runs tests, builds the Vite app and uploads a ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.4-dev` (14-day retention).
+The production site is generated in `dist/`. GitHub Actions runs tests, builds the Vite app and uploads a ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.5-dev` (14-day retention).
 
 ## Controls
 
