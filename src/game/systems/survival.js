@@ -17,6 +17,8 @@ export class SurvivalState {
     if (!this.alive) this.health = 0;
   }
 
+  get maxHealth() { return MAX_HEALTH; }
+
   damage(amount, source = "unknown") {
     const value = finitePositive(amount);
     if (!this.alive || value === 0) return this.snapshot(false, source);
