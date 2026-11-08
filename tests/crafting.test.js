@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Inventory } from "../src/game/systems/inventory.js";
+import { ITEMS } from "../src/game/data/items.js";
+import { RECIPES, SMELTING_RECIPES } from "../src/game/data/recipes.js";
 import { findCraftingRecipe, craftFromGrid } from "../src/game/systems/crafting.js";
 
 test("inventory stacks items and returns overflow", () => {
@@ -60,4 +62,18 @@ test("empty crafting grid safely returns no recipe", () => {
 test("mirrored shaped recipes are accepted", () => {
   const grid = ["oak_planks", "oak_planks", null, "sticks", "oak_planks", null, "sticks", null, null];
   assert.equal(findCraftingRecipe(grid, 3)?.id, "wooden_axe");
+});
+
+test("all registered crafting and smelting recipes reference known items", () => {
+  for (const recipe of RECIPES) {
+    assert.ok(ITEMS[recipe.result.item], `unknown result item in ${recipe.id}`);
+    const ingredients = recipe.type === "shapeless"
+      ? recipe.ingredients
+      : Object.values(recipe.key);
+    for (const item of ingredients) assert.ok(ITEMS[item], `unknown ingredient ${item} in ${recipe.id}`);
+  }
+  for (const recipe of SMELTING_RECIPES) {
+    assert.ok(ITEMS[recipe.input], `unknown smelting input in ${recipe.id}`);
+    assert.ok(ITEMS[recipe.output.item], `unknown smelting output in ${recipe.id}`);
+  }
 });
