@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ChunkStore, CHUNK_SIZE, RENDER_DISTANCES, chunkCoord, inWorld } from '../src/game/systems/chunks.js';
+import { ChunkStore, ChunkScheduler, CHUNK_SIZE, RENDER_DISTANCES, chunkCoord, inWorld } from '../src/game/systems/chunks.js';
 import { BLOCK, biomeAt, generateChunkData } from '../src/game/systems/worldgen.js';
 
 test('chunk coordinates use floor semantics for negative positions',()=>{
@@ -52,4 +52,23 @@ test('new natural block ids remain distinct from existing gameplay block ids',()
  const ids=[BLOCK.TALL_GRASS,BLOCK.FLOWER,BLOCK.CACTUS,BLOCK.WATER,BLOCK.GRAVEL,BLOCK.SNOW,BLOCK.MOSS];
  assert.equal(new Set(ids).size,ids.length);
  assert.ok(ids.every(id=>id>BLOCK.BORDER));
+});
+
+test('incremental scheduler respects per-tick generation budget and Java distance range',()=>{
+ const store=new ChunkStore({generateChunk:({cx,cz})=>[{x:cx*CHUNK_SIZE,y:0,z:cz*CHUNK_SIZE,t:0}]});
+ const scheduler=new ChunkScheduler({store,maxLoadsPerTick:2});
+ const plan=scheduler.update(0,0,2);
+ assert.equal(plan.wanted,25);
+ assert.equal(plan.active,0);
+ assert.equal(scheduler.tick().loaded,2);
+ assert.equal(store.active.size,2);
+ assert.throws(()=>scheduler.update(0,0,1),RangeError);
+ assert.throws(()=>scheduler.update(0,0,33),RangeError);
+});
+test('moving entity is removed from its old chunk snapshot',()=>{
+ const store=new ChunkStore({generateChunk:()=>[]});
+ store.updateEntity({id:'cow-moving',x:1,z:1,health:4});
+ store.updateEntity({id:'cow-moving',x:20,z:1,health:3});
+ assert.equal((store.entityStore.get('0,0')||[]).length,0);
+ assert.equal(store.entityStore.get('1,0')[0].health,3);
 });
