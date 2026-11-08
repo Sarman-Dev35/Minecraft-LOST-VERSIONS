@@ -1,32 +1,48 @@
-# Minecraft: LOST VERSIONS
+# MINECRAFT: The Lost Version
+### An independent voxel sandbox by Sarman Studios
 
-An independent, original voxel sandbox prototype by Sarman Studios.
+**Alpha 0.2.0** — an early playable browser prototype and the foundation for the LOST VERSIONS project.
 
-## Alpha 0.1.0
+> This is an independent, fan-inspired project. It is not affiliated with, endorsed by, or sponsored by Mojang or Microsoft. Minecraft is a trademark of its respective owner. Sarman Studios retains rights to its original code, logo, artwork, and original project materials.
 
-The first playable foundation currently includes:
+## Alpha 0.2.0 features
 
-- A procedurally generated block world with rolling terrain and simple trees.
-- First-person mouse look and WASD movement.
-- Jumping and sprinting.
-- Block breaking and block placement.
-- A five-slot hotbar with number-key selection.
-- Main menu, pause menu, About screen, and settings.
-- Adjustable music volume, mouse sensitivity, field of view, and render distance.
-- Procedurally generated ambient audio using the Web Audio API (no third-party music files).
-- A deliberately simple, early-alpha visual presentation.
+- Procedurally generated block terrain, trees, and a sky/fog atmosphere.
+- First-person controls, jumping, sprinting, mining, and block placement.
+- Resource collection: grass, dirt, stone, wood, and leaves.
+- Inventory screen with live item counts.
+- Starter crafting recipes:
+  - 1 Wood → 4 Planks
+  - 2 Planks → 4 Sticks
+  - 4 Planks → 1 Crafting Table
+  - 3 Planks + 2 Sticks → 1 Wooden Pickaxe
+- Main menu with an original Sarman Studios / The Lost Version title logo.
+- Settings for music volume, mouse sensitivity, field of view, and render distance.
+- Pause menu and synthesized ambient audio.
+- Vite production build and GitHub Actions ZIP artifact.
 
-## Run
+## Run locally
 
-Open `index.html` in a modern browser while connected to the internet. The game imports Three.js as an ES module from jsDelivr, so the first load requires an internet connection. For best results, serve the repository with a local static web server rather than opening the file directly.
-
-For example, with Python installed:
+Requires Node.js 20+ (Node.js 22 recommended).
 
 ```bash
-python -m http.server 8000
+npm install
+npm run dev
 ```
 
-Then visit `http://localhost:8000`.
+Open the local address printed by Vite (normally `http://localhost:5173`).
+
+## Create a production build
+
+```bash
+npm install
+npm run build
+npm run preview
+```
+
+The production site is generated in `dist/`.
+
+Every push to `main`, and every manual workflow dispatch, starts **Actions → Build Alpha**. A successful run publishes a downloadable ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.2.0` (retained for 14 days).
 
 ## Controls
 
@@ -36,19 +52,20 @@ Then visit `http://localhost:8000`.
 | Mouse | Look around |
 | Space | Jump |
 | Left Shift | Sprint |
-| Left mouse button | Break block |
-| Right mouse button | Place selected block |
-| 1–5 | Select hotbar block |
-| Escape | Pause |
-
-## Project direction
-
-This is the clean sandbox foundation for **Minecraft: LOST VERSIONS**. The cursed-version atmosphere, anomalies, fictional lost-version lore, and ENTITY storyline will be developed in later milestones. This alpha intentionally focuses on getting the basic world and controls working first.
-
-## Originality and disclaimer
-
-This is an independent fan-inspired voxel project. It is not affiliated with, endorsed by, or sponsored by Mojang or Microsoft. It does not include Minecraft source code, assets, textures, sounds, or music. All current visuals are generated from original primitive geometry and materials; ambient audio is synthesized at runtime.
+| Left mouse button | Mine a block |
+| Right mouse button | Place selected block (requires that block in inventory) |
+| E | Open / close inventory |
+| 1–5 | Select a block type |
+| Escape | Pause / close inventory |
 
 ## Current limitations
 
-This is an early prototype, not a complete Minecraft replacement. World saving/loading, crafting, inventory management, mobs, multiplayer, mobile support, and offline dependency bundling are not implemented yet.
+This is an early alpha, not a complete Minecraft implementation. World persistence, survival/health, crafting grid placement, tools affecting mining speed, block drops with tool-specific rules, mobs, multiplayer, controller support, and offline dependency bundling are not implemented yet. The current recipes are instant craft buttons rather than a full grid.
+
+## Project direction
+
+The immediate goal is a stable, enjoyable old-school voxel sandbox. Cursed-version anomalies, the fictional lost-version archive, ARG clues, and the ENTITY storyline will be added only after the basic gameplay foundation is tested.
+
+## Original assets
+
+The title logo and favicon are original SVG artwork created for Sarman Studios. No Minecraft source code, official logos, textures, sound recordings, or music are included. The ambient sound is synthesized at runtime.
