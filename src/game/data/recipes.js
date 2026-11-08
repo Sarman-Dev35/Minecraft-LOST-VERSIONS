@@ -76,7 +76,7 @@ export const RECIPES = Object.freeze([
   shaped("compass", [" I ", "IRI", " I "], { I: "iron_ingot", R: "redstone" }, "compass"),
   shaped("clock", [" G ", "GRG", " G "], { G: "gold_ingot", R: "redstone" }, "clock"),
   shaped("paper", ["SSS"], { S: "sugar_cane" }, "paper", 3),
-  shaped("book", ["P", "L", "P"], { P: "paper", L: "leather" }, "book"),
+  shapeless("book", ["paper", "paper", "paper", "leather"], "book", 1, 2),
   shaped("glowstone", ["DD", "DD"], { D: "glowstone_dust" }, "glowstone", 1, 2),
   shaped("nether_brick", ["NN"], { N: "netherrack" }, "nether_brick", 1, 2),
   shapeless("clay_blocks", ["clay_ball", "clay_ball", "clay_ball", "clay_ball"], "clay", 1, 2)
