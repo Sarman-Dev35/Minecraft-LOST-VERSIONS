@@ -12,7 +12,13 @@ export class ChunkRenderer {
   build(chunk) {
     this.unload(chunk.key);
     const groups=new Map();
-    for (const block of chunk.blocks) {
+    const occupied=new Set(chunk.blocks.map(b=>`${b.x},${b.y},${b.z}`));
+    const visible=chunk.blocks.filter(b=>[
+      `${b.x+1},${b.y},${b.z}`,`${b.x-1},${b.y},${b.z}`,
+      `${b.x},${b.y+1},${b.z}`,`${b.x},${b.y-1},${b.z}`,
+      `${b.x},${b.y},${b.z+1}`,`${b.x},${b.y},${b.z-1}`
+    ].some(k=>!occupied.has(k)));
+    for (const block of visible) {
       if (!groups.has(block.t)) groups.set(block.t,[]);
       groups.get(block.t).push(block);
     }
@@ -28,6 +34,7 @@ export class ChunkRenderer {
         mesh.setMatrixAt(index,object.matrix);
       });
       mesh.instanceMatrix.needsUpdate=true;
+      mesh.computeBoundingSphere();
       mesh.userData.blocks=blocks;
       mesh.userData.type=type;
       mesh.userData.chunkKey=chunk.key;
