@@ -58,6 +58,6 @@ test("empty crafting grid safely returns no recipe", () => {
 });
 
 test("mirrored shaped recipes are accepted", () => {
-  const grid = ["oak_planks", null, null, "oak_planks", "sticks", null, null, "sticks", null];
+  const grid = ["oak_planks", "oak_planks", null, "sticks", "oak_planks", null, "sticks", null, null];
   assert.equal(findCraftingRecipe(grid, 3)?.id, "wooden_axe");
 });
