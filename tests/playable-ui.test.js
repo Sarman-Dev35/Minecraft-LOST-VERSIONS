@@ -26,6 +26,7 @@ test("playable game module parses and exposes inventory/crafting UI hooks", asyn
   assert.match(source, /function attackAnimal\(/, "left-click combat damages animals");
   assert.match(source, /getAttackDamage\(slot\?\.item\)/, "equipped item changes attack damage");
   assert.match(source, /function interact\(place\)/, "right-click interaction and placement are handled");
+  assert.match(source, /if\(b\.t===5\)\{remove\(b\.x,b\.y,b\.z\);addItem\('Bed',1\)/, "left-click can mine and collect a bed");
   assert.match(source, /Array\.from\(\{length:9\}/, "nine-slot hotbar is backed by inventory");
   assert.match(source, /function dropSelectedItem\(/, "inventory items can be dropped");
   assert.match(source, /updateDroppedItems\(dt\)/, "dropped items are updated and collected");
