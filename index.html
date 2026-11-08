@@ -70,7 +70,7 @@ function move(dt){let forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw))
  if(!solidAt(nx,camera.position.y-1.45,camera.position.z)&&!solidAt(nx,camera.position.y-.3,camera.position.z))camera.position.x=nx;
  if(!solidAt(camera.position.x,camera.position.y-1.45,nz)&&!solidAt(camera.position.x,camera.position.y-.3,nz))camera.position.z=nz;
  if(keys.Space&&grounded){velocity.y=7;grounded=false}velocity.y-=19*dt;let ny=camera.position.y+velocity.y*dt;
- if(velocity.y<=0&&(solidAt(camera.position.x,ny-1.65,camera.position.z)||solidAt(camera.position.x-.25,ny-1.65,camera.position.z)||solidAt(camera.position.x+.25,ny-1.65,camera.position.z))){ny=Math.floor(ny-1.65)+1+1.65;velocity.y=0;grounded=true}else grounded=false;
+ if(velocity.y<=0&&(solidAt(camera.position.x,ny-1.65,camera.position.z)||solidAt(camera.position.x-.25,ny-1.65,camera.position.z)||solidAt(camera.position.x+.25,ny-1.65,camera.position.z))){ny=Math.floor(ny-1.65)+.5+1.65;velocity.y=0;grounded=true}else grounded=false;
  if(ny< -8){camera.position.set(0,heightAt(0,0)+4,7);velocity.set(0,0,0);toast('Respawned')}
  camera.position.y=ny;
 }
