@@ -59,7 +59,7 @@ export const RECIPES = Object.freeze([
   shaped("wooden_boat", ["P P", "PPP"], { P: "oak_planks" }, "wooden_boat"),
   shaped("sign", ["PPP", "PPP", " S "], { P: "oak_planks", S: "sticks" }, "sign", 3),
   shaped("bowl", ["P P", " P "], { P: "oak_planks" }, "bowl", 4),
-  shaped("mushroom_stew", ["R", "B", "W"], { R: "red_mushroom", B: "bowl", W: "brown_mushroom" }, "mushroom_stew", 1),
+  shapeless("mushroom_stew", ["red_mushroom", "bowl", "brown_mushroom"], "mushroom_stew", 1, 2),
   shaped("torch", ["C", "S"], { C: "coal", S: "sticks" }, "stick_torch", 4, 2),
   shaped("ladder", ["S S", "SSS", "S S"], { S: "sticks" }, "ladder", 3),
   shaped("wooden_door", ["PP", "PP", "PP"], { P: "oak_planks" }, "wooden_door", 3),
