@@ -9,6 +9,8 @@ const shapeless = (id, ingredients, result, count = 1, grid = 2) => ({
 
 export const RECIPES = Object.freeze([
   shaped("planks", ["L"], { L: "oak_log" }, "oak_planks", 4, 2),
+  shaped("birch_planks", ["L"], { L: "birch_log" }, "oak_planks", 4, 2),
+  shaped("pine_planks", ["L"], { L: "pine_log" }, "oak_planks", 4, 2),
   shaped("sticks", ["P", "P"], { P: "oak_planks" }, "sticks", 4, 2),
   shaped("crafting_table", ["PP", "PP"], { P: "oak_planks" }, "crafting_table", 1, 2),
   shaped("bed", ["WWW", "PPP"], { W: "wool", P: "oak_planks" }, "bed"),
@@ -84,9 +86,12 @@ export const RECIPES = Object.freeze([
 ]);
 
 export const SMELTING_RECIPES = Object.freeze([
-  { id: "smelt_iron", input: "iron_ore", output: { item: "iron_ingot", count: 1 }, experience: 0.7 },
-  { id: "smelt_gold", input: "gold_ore", output: { item: "gold_ingot", count: 1 }, experience: 1 },
+  { id: "smelt_iron", input: "raw_iron", output: { item: "iron_ingot", count: 1 }, experience: 0.7 },
+  { id: "smelt_gold", input: "raw_gold", output: { item: "gold_ingot", count: 1 }, experience: 1 },
+
   { id: "smelt_glass", input: "sand", output: { item: "glass", count: 1 }, experience: 0.1 },
   { id: "smelt_charcoal", input: "oak_log", output: { item: "charcoal", count: 1 }, experience: 0.15 },
-  { id: "cook_pork", input: "raw_porkchop", output: { item: "cooked_porkchop", count: 1 }, experience: 0.35 }
+  { id: "cook_pork", input: "raw_porkchop", output: { item: "cooked_porkchop", count: 1 }, experience: 0.35 },
+  { id: "cook_beef", input: "raw_beef", output: { item: "cooked_beef", count: 1 }, experience: 0.35 },
+  { id: "cook_chicken", input: "raw_chicken", output: { item: "cooked_chicken", count: 1 }, experience: 0.35 }
 ]);
