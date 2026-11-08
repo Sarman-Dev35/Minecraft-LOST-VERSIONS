@@ -114,3 +114,9 @@ test("36-slot inventory persists all slots without exceeding stack limits", () =
   assert.equal(restored.slots[1].count, 64);
   assert.equal(restored.slots[2].count, 2);
 });
+
+test("inventory safely rejects unknown item identifiers", () => {
+  const inv = new Inventory(36);
+  assert.equal(inv.add("not_a_real_item", 4), 4);
+  assert.equal(inv.count("not_a_real_item"), 0);
+});
