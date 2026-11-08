@@ -12,7 +12,7 @@ test("playable game module parses and exposes survival, mining, furnace and UI h
     assert.match(html,new RegExp('id="' + id + '"'),id+" UI element exists");
   }
   assert.match(html,/MINECRAFT: The Lost Version/,"game title identifies the project");
-  assert.match(html,/THE LOST VERSION/,"title artwork includes the subtitle");
+  assert.match(html,/alt="MINECRAFT The Lost Version"/,"original title artwork is wired into the menu");
   assert.match(source,/new Inventory\(36\)/,"game uses a 36-slot inventory");
   assert.match(source,/findCraftingRecipe/,"crafting grid uses the shared recipe matcher");
   assert.match(source,/inventorySlots:inventoryCore\.toJSON\(\)/,"all inventory slots are saved");
