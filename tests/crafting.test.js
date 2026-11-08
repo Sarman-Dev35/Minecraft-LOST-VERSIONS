@@ -52,3 +52,12 @@ test("inventory-full crafting does not consume ingredients", () => {
   assert.equal(craftFromGrid(["oak_log", null, null, null], 2, inv).reason, "inventory_full");
   assert.equal(inv.count("oak_log"), 1);
 });
+
+test("empty crafting grid safely returns no recipe", () => {
+  assert.equal(findCraftingRecipe(Array(9).fill(null), 3), null);
+});
+
+test("mirrored shaped recipes are accepted", () => {
+  const grid = ["oak_planks", null, null, "oak_planks", "sticks", null, null, "sticks", null];
+  assert.equal(findCraftingRecipe(grid, 3)?.id, "wooden_axe");
+});
