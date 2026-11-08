@@ -36,6 +36,7 @@ Open the local address printed by Vite (normally `http://localhost:5173`).
 
 ```bash
 npm install
+npm test
 npm run build
 npm run preview
 ```
@@ -58,9 +59,21 @@ Every push to `main`, and every manual workflow dispatch, starts **Actions → B
 | 1–5 | Select a block type |
 | Escape | Pause / close inventory |
 
+## Development foundation in progress (Alpha 0.3)
+
+The codebase now has the first modular gameplay foundation in `src/game/`:
+
+- A stable item registry with classic wood/stone/iron/gold/diamond equipment, armor, utility items, ores, and Nether materials.
+- A stack-aware inventory core with item validation and overflow handling.
+- Data-driven shaped and shapeless recipes for 2×2 and 3×3 crafting, including mirrored and rotated patterns.
+- A starter smelting recipe registry for the future furnace system.
+- Automated Node.js tests for inventory stacking, crafting, recipe matching, and recipe data integrity (`npm test`).
+
+These modules are currently a development foundation and are not yet connected to the in-game inventory interface. The playable interface remains the Alpha 0.2.0 prototype until integration and testing are complete.
+
 ## Current limitations
 
-This is an early alpha, not a complete Minecraft implementation. World persistence, survival/health, crafting grid placement, tools affecting mining speed, block drops with tool-specific rules, mobs, multiplayer, controller support, and offline dependency bundling are not implemented yet. The current recipes are instant craft buttons rather than a full grid.
+This is an early alpha, not a complete Minecraft implementation. World persistence, survival/health, interactive crafting-grid UI, furnace interaction, tool-aware mining and drops, mobs, multiplayer, and controller support are not implemented yet. The current in-game recipes are still instant craft buttons; the new grid-based crafting engine is not connected to the interface yet.
 
 ## Project direction
 
