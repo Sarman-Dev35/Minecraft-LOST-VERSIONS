@@ -18,4 +18,10 @@ test("playable game module parses and exposes inventory/crafting UI hooks", asyn
   assert.match(source, /new Inventory\(36\)/, "game uses a 36-slot inventory");
   assert.match(source, /findCraftingRecipe/, "crafting grid uses the shared recipe matcher");
   assert.match(source, /inventorySlots:inventoryCore\.toJSON\(\)/, "all inventory slots are saved");
+  assert.match(source, /function spawnAnimals\(/, "wandering animals are spawned");
+  assert.match(source, /function damageAnimal\(/, "animals can be attacked and drop loot");
+  assert.match(source, /function consumeFood\(/, "food can be eaten");
+  assert.match(source, /function dropSelectedItem\(/, "inventory items can be dropped");
+  assert.match(source, /updateDroppedItems\(dt\)/, "dropped items are updated and collected");
+  assert.match(source, /regenTimer>=30/, "slow passive health regeneration is active");
 });
