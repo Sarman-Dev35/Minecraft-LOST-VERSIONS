@@ -3,6 +3,10 @@
 const MAX_HEALTH = 20;
 const FOOD_HEALING = Object.freeze({
   raw_porkchop: 3,
+  raw_beef: 3,
+  raw_chicken: 2,
+  cooked_beef: 8,
+  cooked_chicken: 6,
   cooked_porkchop: 8,
   bread: 5,
   apple: 4,
