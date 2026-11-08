@@ -37,6 +37,8 @@ export const ITEMS = Object.freeze({
   feather: { name: "Feather", type: "material", stack: 64 },
   leather: { name: "Leather", type: "material", stack: 64 },
   wool: { name: "Wool", type: "block", stack: 64 },
+  oak_leaves: { name: "Oak Leaves", type: "block", stack: 64 },
+  bed: { name: "Bed", type: "block", stack: 1 },
   paper: { name: "Paper", type: "material", stack: 64 },
   book: { name: "Book", type: "material", stack: 64 },
   wheat: { name: "Wheat", type: "material", stack: 64 },

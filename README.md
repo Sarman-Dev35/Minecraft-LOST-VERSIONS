@@ -1,50 +1,40 @@
 # MINECRAFT: The Lost Version
-### An independent voxel sandbox by Sarman Studios
+### An independent voxel survival sandbox by Sarman Studios
 
-**Alpha 0.2.0** — an early playable browser prototype and the foundation for the LOST VERSIONS project.
+**Alpha 0.3 development build** — a classic-inspired survival prototype under active development.
 
 > This is an independent, fan-inspired project. It is not affiliated with, endorsed by, or sponsored by Mojang or Microsoft. Minecraft is a trademark of its respective owner. Sarman Studios retains rights to its original code, logo, artwork, and original project materials.
 
-## Alpha 0.2.0 playable prototype
+## Playable systems in this development build
 
-- Procedurally generated block terrain, trees, and a sky/fog atmosphere.
-- First-person controls, jumping, sprinting, mining, and block placement.
-- Resource collection: grass, dirt, stone, wood, and leaves.
-- Inventory screen with live item counts.
-- Starter crafting recipes:
-  - 1 Wood → 4 Planks
-  - 2 Planks → 4 Sticks
-  - 4 Planks → 1 Crafting Table
-  - 3 Planks + 2 Sticks → 1 Wooden Pickaxe
-- Main menu with an original Sarman Studios / The Lost Version title logo.
-- Settings for music volume, mouse sensitivity, field of view, and render distance.
-- Pause menu and synthesized ambient audio.
+- First-person movement, mouse look, jumping, sprinting, mining and block placement.
+- Procedural starter terrain with trees and simple wool-source sheep placeholders.
+- Six-slot block hotbar, health display, fall damage and respawn.
+- Day/night cycle with changing sky and lighting.
+- Bed crafting (3 wool + 3 planks), placement, night-time sleeping and morning healing.
+- 36-slot stack-aware inventory with drag-and-drop rearrangement.
+- 2×2 hand crafting and 3×3 crafting when a crafting table is present in the inventory.
+- Shaped and shapeless recipes use the shared recipe registry.
+- Browser-local saves for terrain, inventory slots, crafting grid, player position, health, day/time and selected hotbar slot.
+- Main menu, settings, pause menu and synthesized ambient audio.
 
-## Alpha 0.3 development foundation
+## Classic survival direction
 
-The following reusable systems are now being built and tested separately before they are connected to the playable interface:
+- No hunger meter: food is intended to restore health directly, following the older Alpha/Beta direction.
+- Diamond is the highest equipment tier.
+- No End, Ender Dragon or Netherite.
+- The Nether is a later milestone, after Overworld survival is stable.
+- Horror elements, ENTITY_232, cursed-world events and ARG content remain out of scope until the ordinary survival game is complete.
 
-- Stable item registry for classic materials, ores, tools, armor, food, utility items, and Nether materials. Diamond is the top equipment tier; there is no Netherite or End content.
-- Stack-aware 36-slot inventory core with item validation and overflow handling.
-- Data-driven shaped and shapeless crafting recipes for 2×2 and 3×3 grids, including mirrored and rotated patterns.
-- Starter smelting recipe registry for the future furnace interaction.
-- **Classic survival rules:** 20 health points, armor damage reduction, direct food-based healing, death and respawn. There is deliberately no hunger meter, matching the old Alpha/Beta-era direction.
-- **Deterministic terrain generation:** seed-based height and biome queries, grass/dirt/stone/sand layers, cave openings, and classic coal/iron/gold/redstone/lapis/diamond ore bands.
-- Automated Node.js regression tests for inventory, crafting, recipe integrity, survival rules, and terrain determinism.
+## Still under development — not yet a complete survival release
 
-Important: these systems are development modules, not all integrated into the running game yet. The in-game interface remains the Alpha 0.2.0 prototype until the integration milestone is complete.
+The current playable interface is still an early prototype. The following are not yet fully connected or gameplay-tested: tool selection and durability, ore generation and mining tiers, working furnace/fuel/smelting UI, food consumption, armor equipment, animal AI and breeding, hostile mob AI and combat, drops/loot balancing, larger streamed terrain and a complete world-management screen. Some item definitions and recipes exist as data foundations, but a registry entry alone does not mean that the feature is playable.
 
-## Current limitations
-
-This is an early alpha, not a complete Minecraft-like survival game. The new crafting grid, survival/health HUD, terrain generator, tool-aware mining and drops, furnace interaction, world persistence, mobs, Nether travel, and full block/item interaction still require integration and gameplay testing. The current in-game recipes are still instant craft buttons.
-
-## Project direction
-
-The target is a nostalgic Alpha/Beta-inspired sandbox: classic Overworld survival, diamond as the highest equipment tier, and a Nether as a later optional dimension. No End, Ender Dragon, Netherite, modern hunger meter, cursed-world events, ARG clues, or ENTITY storyline will be added until the ordinary survival game is complete and stable.
+Sheep are currently simple static voxel placeholders, not animated animals. The crafting grid is functional but intentionally simple; item clicks move one item into the grid, and inventory slots can be rearranged by drag-and-drop.
 
 ## Open-source research and licensing
 
-Development research uses public project documentation and license information from projects such as [Luanti](https://github.com/luanti-org/luanti) and [Terasology](https://github.com/MovingBlocks/Terasology) for general architecture ideas only. No third-party game source code or assets have been copied into this repository. Any future code or asset reuse must be reviewed file-by-file for its exact license and attribution requirements. The project uses its own implementation and original Sarman Studios materials.
+Development research uses public documentation and license information from projects such as [Luanti](https://github.com/luanti-org/luanti) and [Terasology](https://github.com/MovingBlocks/Terasology) for general architecture ideas only. No third-party game source code, textures, sounds or assets have been copied into this repository. Any future code or asset reuse must be reviewed file-by-file for its exact license and attribution requirements.
 
 ## Run locally
 
@@ -57,7 +47,7 @@ npm run dev
 
 Open the local address printed by Vite (normally `http://localhost:5173`).
 
-## Create a production build
+## Test and build
 
 ```bash
 npm install
@@ -66,9 +56,7 @@ npm run build
 npm run preview
 ```
 
-The production site is generated in `dist/`.
-
-Every push to any branch, and every manual workflow dispatch, starts **Actions → Build Alpha**. A successful run publishes a downloadable ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.2.0` (retained for 14 days). The artifact name remains 0.2.0 because the new systems are not yet integrated into a playable Alpha 0.3 release.
+The production site is generated in `dist/`. GitHub Actions runs tests, builds the Vite app and uploads a ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.3-dev` (14-day retention).
 
 ## Controls
 
@@ -78,12 +66,15 @@ Every push to any branch, and every manual workflow dispatch, starts **Actions �
 | Mouse | Look around |
 | Space | Jump |
 | Left Shift | Sprint |
-| Left mouse button | Mine a block |
-| Right mouse button | Place selected block (requires that block in inventory) |
+| Left mouse button | Mine a block / collect a wool-source sheep |
+| Right mouse button | Place selected block / sleep at a bed at night |
 | E | Open / close inventory |
-| 1–5 | Select a block type |
+| 1–6 | Select a hotbar block |
+| Inventory click | Move one item into the crafting grid |
+| Inventory drag-and-drop | Rearrange inventory slots |
+| Crafting-grid click | Return one item to inventory |
 | Escape | Pause / close inventory |
 
 ## Original assets
 
-The title logo and favicon are original SVG artwork created for Sarman Studios. No Minecraft source code, official logos, textures, sound recordings, or music are included. The ambient sound is synthesized at runtime.
+The title logo and favicon are original SVG artwork created for Sarman Studios. No Minecraft source code, official logos, textures, sound recordings, or music are included. Ambient sound is synthesized at runtime.

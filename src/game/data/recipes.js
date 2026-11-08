@@ -11,6 +11,7 @@ export const RECIPES = Object.freeze([
   shaped("planks", ["L"], { L: "oak_log" }, "oak_planks", 4, 2),
   shaped("sticks", ["P", "P"], { P: "oak_planks" }, "sticks", 4, 2),
   shaped("crafting_table", ["PP", "PP"], { P: "oak_planks" }, "crafting_table", 1, 2),
+  shaped("bed", ["WWW", "PPP"], { W: "wool", P: "oak_planks" }, "bed"),
   shaped("chest", ["PPP", "P P", "PPP"], { P: "oak_planks" }, "chest"),
   shaped("furnace", ["CCC", "C C", "CCC"], { C: "cobblestone" }, "furnace"),
   shaped("wooden_pickaxe", ["PPP", " S ", " S "], { P: "oak_planks", S: "sticks" }, "wooden_pickaxe"),
