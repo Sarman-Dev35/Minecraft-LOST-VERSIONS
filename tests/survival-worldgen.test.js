@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { SurvivalState, MAX_HEALTH } from "../src/game/systems/survival.js";
 import { generateTerrain, terrainHeight, biomeAt } from "../src/game/systems/worldgen.js";
+import { ITEMS } from "../src/game/data/items.js";
 
 test("player starts with ten hearts and no hunger meter", () => {
   const player = new SurvivalState();
@@ -76,4 +77,9 @@ test("terrain generator rejects invalid chunk sizes", () => {
 test("height and biome queries are deterministic", () => {
   assert.equal(terrainHeight(4, 8, 123), terrainHeight(4, 8, 123));
   assert.equal(biomeAt(4, 8, 123), biomeAt(4, 8, 123));
+});
+
+test("every generated terrain block exists in the item registry", () => {
+  const blocks = generateTerrain({ width: 18, depth: 18, seed: 2026 });
+  for (const block of blocks) assert.ok(ITEMS[block.id], `unregistered terrain block: ${block.id}`);
 });
