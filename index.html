@@ -19,7 +19,8 @@ button:hover{background:#777;border-color:#ddd}button:active{transform:translate
 #hud{position:fixed;inset:0;pointer-events:none}.crosshair{position:absolute;left:50%;top:50%;width:14px;height:14px;transform:translate(-50%,-50%)}.crosshair:before,.crosshair:after{content:"";position:absolute;background:#fff;box-shadow:0 0 2px #000}.crosshair:before{width:2px;height:14px;left:6px}.crosshair:after{height:2px;width:14px;top:6px}
 #hotbar{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;padding:4px;background:#1119;border:2px solid #aaa;gap:3px}.slot{width:43px;height:43px;border:2px solid #777;background:#3339;display:grid;place-items:center;font-size:10px;color:#ddd;position:relative}.slot.active{border:3px solid white;background:#7779}.swatch{width:20px;height:20px;border:1px solid #0008}.slot span{position:absolute;top:1px;left:3px;font-size:9px}
 #hint{position:absolute;top:15px;left:15px;color:white;text-shadow:1px 1px #000;font-size:12px;line-height:1.6}#toast{position:absolute;top:15%;left:50%;transform:translateX(-50%);background:#111c;padding:9px 16px;opacity:0;transition:opacity .25s}
-#pauseHint{position:absolute;bottom:78px;width:100%;text-align:center;font-size:11px;color:#ddd;text-shadow:1px 1px #000}\n#status{position:absolute;left:15px;bottom:82px;color:#fff;font-size:15px;letter-spacing:2px;text-shadow:1px 2px #000}#dayLabel{position:absolute;right:15px;top:15px;color:#fff;font-size:12px;text-shadow:1px 1px #000;background:#1118;padding:7px 10px}
+#pauseHint{position:absolute;bottom:78px;width:100%;text-align:center;font-size:11px;color:#ddd;text-shadow:1px 1px #000}
+#status{position:absolute;left:15px;bottom:82px;color:#fff;font-size:15px;letter-spacing:2px;text-shadow:1px 2px #000}#dayLabel{position:absolute;right:15px;top:15px;color:#fff;font-size:12px;text-shadow:1px 1px #000;background:#1118;padding:7px 10px}
 
 .brand{width:min(540px,94vw);padding:30px 28px 22px;background:linear-gradient(180deg,rgba(37,39,39,.97),rgba(18,20,20,.98));border:3px solid #777;box-shadow:0 0 0 2px #222,0 18px 60px #000c;text-align:center;position:relative}
 .brand:before{content:"";position:absolute;inset:7px;border:1px solid #ffffff20;pointer-events:none}
@@ -70,7 +71,8 @@ function heightAt(x,z){return Math.floor(3+Math.sin(x*.22)*1.3+Math.cos(z*.19)*1
 function generateWorld(){
  world.clear();const r=Number($('quality').value);
  for(let x=-r;x<=r;x++)for(let z=-r;z<=r;z++){let h=heightAt(x,z);for(let y=-3;y<=h;y++)put(x,y,z,y===h?0:y>h-3?1:2);
- if(hash(x,z)>.986&&Math.abs(x)+Math.abs(z)>7){let th=3+Math.floor(hash(z,x)*3);for(let y=1;y<=th;y++)put(x,h+y,z,3);for(let ax=-2;ax<=2;ax++)for(let az=-2;az<=2;az++)for(let ay=th-1;ay<=th+2;ay++)if(Math.abs(ax)+Math.abs(az)+(ay===th+2?2:0)<5&&!world.has(key(x+ax,h+ay,z+az)))put(x+ax,h+ay,z+az,4);}\n if(hash(x+83,z-41)>.997&&Math.abs(x)+Math.abs(z)>5)put(x,h+1,z,6);
+ if(hash(x,z)>.986&&Math.abs(x)+Math.abs(z)>7){let th=3+Math.floor(hash(z,x)*3);for(let y=1;y<=th;y++)put(x,h+y,z,3);for(let ax=-2;ax<=2;ax++)for(let az=-2;az<=2;az++)for(let ay=th-1;ay<=th+2;ay++)if(Math.abs(ax)+Math.abs(az)+(ay===th+2?2:0)<5&&!world.has(key(x+ax,h+ay,z+az)))put(x+ax,h+ay,z+az,4);}
+ if(hash(x+83,z-41)>.997&&Math.abs(x)+Math.abs(z)>5)put(x,h+1,z,6);
  }
  rebuild();
 }
