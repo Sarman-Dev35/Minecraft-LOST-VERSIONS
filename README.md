@@ -1,11 +1,11 @@
 # MINECRAFT: The Lost Version
 ### An independent voxel sandbox by Sarman Studios
 
-**Alpha 0.2.0** — an early playable browser prototype and the foundation for the LOST VERSIONS project.
+**Alpha 0.3 development build** — expanding the playable browser prototype toward a complete classic-era survival sandbox.
 
 > This is an independent, fan-inspired project. It is not affiliated with, endorsed by, or sponsored by Mojang or Microsoft. Minecraft is a trademark of its respective owner. Sarman Studios retains rights to its original code, logo, artwork, and original project materials.
 
-## Alpha 0.2.0 playable prototype
+## Original playable prototype features
 
 - Procedurally generated block terrain, trees, and a sky/fog atmosphere.
 - First-person controls, jumping, sprinting, mining, and block placement.
@@ -20,7 +20,7 @@
 - Settings for music volume, mouse sensitivity, field of view, and render distance.
 - Pause menu and synthesized ambient audio.
 
-## Alpha 0.3 development foundation
+## Playable survival systems in the current development branch\n\n- A six-slot block hotbar with a placeable bed.\n- Sheep-like wool sources in the generated world; mine them to collect wool.\n- Bed crafting (3 wool + 3 planks) and sleeping at night to advance to morning and restore a small amount of health.\n- A day/night cycle with changing sky and lighting.\n- Health display and fall damage.\n- Browser-local world saves: terrain changes, inventory, player position, health, day and selected hotbar slot are restored when returning to the world.\n\nThese are early integrations and still need hands-on browser testing. The sheep are currently simple voxel placeholders, not animated mobs.\n\n## Alpha 0.3 development foundation
 
 The following reusable systems are now being built and tested separately before they are connected to the playable interface:
 
@@ -32,11 +32,11 @@ The following reusable systems are now being built and tested separately before 
 - **Deterministic terrain generation:** seed-based height and biome queries, grass/dirt/stone/sand layers, cave openings, and classic coal/iron/gold/redstone/lapis/diamond ore bands.
 - Automated Node.js regression tests for inventory, crafting, recipe integrity, survival rules, and terrain determinism.
 
-Important: these systems are development modules, not all integrated into the running game yet. The in-game interface remains the Alpha 0.2.0 prototype until the integration milestone is complete.
+Important: these systems are development modules, not all integrated into the running game yet. Some systems are now connected to the playable interface, but the game is still an experimental development build, not a complete survival release.
 
 ## Current limitations
 
-This is an early alpha, not a complete Minecraft-like survival game. The new crafting grid, survival/health HUD, terrain generator, tool-aware mining and drops, furnace interaction, world persistence, mobs, Nether travel, and full block/item interaction still require integration and gameplay testing. The current in-game recipes are still instant craft buttons.
+This is an early alpha, not a complete Minecraft-like survival game. The new crafting grid, survival/health HUD, terrain generator, tool-aware mining and drops, furnace interaction, world persistence, mobs, Nether travel, and full block/item interaction still require integration and gameplay testing. The original starter recipes remain simple instant-craft buttons; a full grid-based crafting interface, furnace, combat, passive/hostile mob AI, tool durability and broader survival progression still need implementation.
 
 ## Project direction
 
@@ -68,7 +68,7 @@ npm run preview
 
 The production site is generated in `dist/`.
 
-Every push to any branch, and every manual workflow dispatch, starts **Actions → Build Alpha**. A successful run publishes a downloadable ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.2.0` (retained for 14 days). The artifact name remains 0.2.0 because the new systems are not yet integrated into a playable Alpha 0.3 release.
+Every push to any branch, and every manual workflow dispatch, starts **Actions → Build Alpha**. A successful run publishes a downloadable ZIP artifact named `Minecraft-LOST-VERSIONS-Alpha-0.3-dev` (retained for 14 days). The artifact name remains 0.2.0 because the new systems are not yet integrated into a playable Alpha 0.3 release.
 
 ## Controls
 
