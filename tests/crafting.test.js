@@ -90,3 +90,27 @@ test("rotated shaped recipes are accepted", () => {
   const rotated = [null, "oak_planks", "coal", "sticks"];
   assert.equal(findCraftingRecipe(rotated, 2, [recipe])?.id, "test_rotation");
 });
+
+test("36-slot survival inventory can hold the bed materials and crafted bed", () => {
+  const inv = new Inventory(36);
+  inv.add("wool", 3);
+  inv.add("oak_planks", 3);
+  const grid = ["wool", "wool", "wool", "oak_planks", "oak_planks", "oak_planks", null, null, null];
+  const result = craftFromGrid(grid, 3, inv);
+  assert.equal(result.ok, true);
+  assert.equal(result.result.item, "bed");
+  assert.equal(inv.count("wool"), 0);
+  assert.equal(inv.count("oak_planks"), 0);
+  assert.equal(inv.count("bed"), 1);
+});
+
+test("36-slot inventory persists all slots without exceeding stack limits", () => {
+  const inv = new Inventory(36);
+  inv.add("oak_log", 130);
+  const restored = new Inventory(36, inv.toJSON());
+  assert.equal(restored.count("oak_log"), 130);
+  assert.equal(restored.slots.length, 36);
+  assert.equal(restored.slots[0].count, 64);
+  assert.equal(restored.slots[1].count, 64);
+  assert.equal(restored.slots[2].count, 2);
+});
